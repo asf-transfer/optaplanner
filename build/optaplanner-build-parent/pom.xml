@@ -66,7 +66,7 @@
 
     <!-- Plugin version properties -->
 
-    <version.asciidoctor.plugin>2.2.3</version.asciidoctor.plugin>
+    <version.asciidoctor.plugin>3.1.1</version.asciidoctor.plugin>
     <version.assembly.plugin>3.4.2</version.assembly.plugin>
     <version.compiler.plugin>3.8.1</version.compiler.plugin>
     <version.dependency.plugin>3.5.0</version.dependency.plugin>
