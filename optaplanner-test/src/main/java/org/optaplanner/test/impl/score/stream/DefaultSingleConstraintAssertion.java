@@ -132,13 +132,13 @@ public final class DefaultSingleConstraintAssertion<Solution_, Score_ extends Sc
         if (actualScoreImpactType == ScoreImpactType.MIXED) {
             // Impact means we need to check for expected impact type and actual impact match.
             switch (scoreImpactType) {
-                case REWARD:
+                case PENALTY:
                     Number negatedImpact = deducedImpacts.getValue();
                     if (equalityPredicate.test(matchWeightTotal, negatedImpact)) {
                         return;
                     }
                     break;
-                case PENALTY:
+                case REWARD:
                     if (equalityPredicate.test(matchWeightTotal, impact)) {
                         return;
                     }
@@ -235,9 +235,9 @@ public final class DefaultSingleConstraintAssertion<Solution_, Score_ extends Sc
                     if (actualImpactType == ScoreImpactType.MIXED) {
                         boolean isImpactPositive = constraintMatchTotal.getScore().compareTo(zeroScore) > 0;
                         boolean isImpactNegative = constraintMatchTotal.getScore().compareTo(zeroScore) < 0;
-                        if (isImpactPositive && scoreImpactType == ScoreImpactType.PENALTY) {
+                        if (isImpactPositive && scoreImpactType == ScoreImpactType.REWARD) {
                             return constraintMatchTotal.getConstraintMatchSet().size();
-                        } else if (isImpactNegative && scoreImpactType == ScoreImpactType.REWARD) {
+                        } else if (isImpactNegative && scoreImpactType == ScoreImpactType.PENALTY) {
                             return constraintMatchTotal.getConstraintMatchSet().size();
                         } else {
                             return 0;

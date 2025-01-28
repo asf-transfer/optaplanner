@@ -53,7 +53,7 @@ public final class TestdataConstraintVerifierConstraintProvider implements Const
     public Constraint impactEveryEntity(ConstraintFactory constraintFactory) {
         return constraintFactory.forEach(TestdataConstraintVerifierFirstEntity.class)
                 .impact(HardSoftScore.ofHard(4),
-                        entity -> Objects.equals(entity.getCode(), "A") ? 1 : -1)
+                        entity -> Objects.equals(entity.getCode(), "REWARD") ? 1 : -1)
                 .asConstraint("Impact every standard entity");
     }
 
