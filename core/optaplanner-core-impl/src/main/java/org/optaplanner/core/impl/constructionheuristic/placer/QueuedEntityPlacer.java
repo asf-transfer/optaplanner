@@ -27,6 +27,8 @@ import org.optaplanner.core.impl.heuristic.move.Move;
 import org.optaplanner.core.impl.heuristic.selector.common.iterator.UpcomingSelectionIterator;
 import org.optaplanner.core.impl.heuristic.selector.entity.EntitySelector;
 import org.optaplanner.core.impl.heuristic.selector.move.MoveSelector;
+import org.optaplanner.core.impl.heuristic.selector.move.generic.ChangeMoveSelector;
+import org.optaplanner.core.impl.heuristic.selector.move.generic.SwapMoveSelector;
 
 public class QueuedEntityPlacer<Solution_> extends AbstractEntityPlacer<Solution_> implements EntityPlacer<Solution_> {
 
@@ -71,8 +73,17 @@ public class QueuedEntityPlacer<Solution_> extends AbstractEntityPlacer<Solution
                     entityIterator.next();
                     moveSelectorIterator = moveSelectorList.iterator();
                 }
-                MoveSelector<Solution_> moveSelector = moveSelectorIterator.next();
-                moveIterator = moveSelector.iterator();
+
+                // See https://issues.redhat.com/browse/PLANNER-2933
+                Object moveSelector = moveSelectorIterator.next();
+
+                if (moveSelector instanceof SwapMoveSelector) {
+                    moveIterator = ((SwapMoveSelector) moveSelector).iterator();
+                } else if (moveSelector instanceof ChangeMoveSelector) {
+                    moveIterator = ((ChangeMoveSelector) moveSelector).iterator();
+                } else if (moveSelector instanceof MoveSelector) {
+                    moveIterator = ((MoveSelector) moveSelector).iterator();
+                }
             }
             return new Placement<>(moveIterator);
         }

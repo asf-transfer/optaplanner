@@ -162,7 +162,7 @@ public abstract class AbstractFromPropertyValueRangeDescriptor<Solution_>
         // - If only ValueRange.createOriginalIterator() is used, cloning a Set to a List is a waste of time.
         // - If the List is a LinkedList, ValueRange.createRandomIterator(Random)
         //   and ValueRange.get(int) are not efficient.
-        return (collection instanceof List ? (List<T>) collection : new ArrayList<>(collection));
+        return new ArrayList<>(collection);
     }
 
 }

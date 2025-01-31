@@ -19,14 +19,16 @@
 
 package org.optaplanner.core.impl.heuristic.selector.move.composite;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import org.optaplanner.core.impl.heuristic.move.Move;
 import org.optaplanner.core.impl.heuristic.selector.common.iterator.SelectionIterator;
 import org.optaplanner.core.impl.heuristic.selector.move.MoveSelector;
+import org.optaplanner.core.impl.heuristic.selector.move.generic.ChangeMoveSelector;
+import org.optaplanner.core.impl.heuristic.selector.move.generic.SwapMoveSelector;
 
 final class UniformRandomUnionMoveIterator<Solution_> extends SelectionIterator<Move<Solution_>> {
 
@@ -34,10 +36,23 @@ final class UniformRandomUnionMoveIterator<Solution_> extends SelectionIterator<
     private final Random workingRandom;
 
     public UniformRandomUnionMoveIterator(List<MoveSelector<Solution_>> childMoveSelectorList, Random workingRandom) {
-        this.moveIteratorList = childMoveSelectorList.stream()
-                .map(Iterable::iterator)
-                .filter(Iterator::hasNext)
-                .collect(Collectors.toList());
+        ArrayList<Iterator<Move<Solution_>>> list = new ArrayList<>();
+
+        // See https://issues.redhat.com/browse/PLANNER-2933
+        Iterator iterator;
+        for (Object s : childMoveSelectorList) {
+            if (s instanceof SwapMoveSelector) {
+                iterator = ((SwapMoveSelector) s).iterator();
+            } else if (s instanceof ChangeMoveSelector) {
+                iterator = ((ChangeMoveSelector) s).iterator();
+            } else {
+                iterator = ((MoveSelector) s).iterator();
+            }
+            if (iterator.hasNext()) {
+                list.add(iterator);
+            }
+        }
+        this.moveIteratorList = list;
         this.workingRandom = workingRandom;
     }
 
@@ -56,5 +71,4 @@ final class UniformRandomUnionMoveIterator<Solution_> extends SelectionIterator<
         }
         return next;
     }
-
 }
