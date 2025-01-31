@@ -1,0 +1,17 @@
+github:
+  features:
+    issues: true
+  enabled_merge_buttons:
+    merge: false
+    rebase: true
+    squash: true
+  dependabot_alerts: true
+  dependabot_updates: false
+  protected_branches:
+    main:
+      required_status_checks:
+        strict: true
+      required_pull_request_reviews:
+        #require_code_owner_reviews: true
+        dismiss_stale_reviews: true
+        required_approving_review_count: 2

@@ -20,6 +20,7 @@
 
 # Eclipse, Netbeans and IntelliJ files
 /.*
+!.asf.yaml
 !/.github
 !/.ci
 !.gitignore
